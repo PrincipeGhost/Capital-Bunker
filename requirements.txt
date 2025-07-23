@@ -1,3 +1,4 @@
-
+flask
+aiohttp
 aiogram==2.25.1
 requests==2.31.0
