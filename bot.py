@@ -4,32 +4,11 @@ import json
 from stripe_checker import check_card
 from bin_lookup import get_bin_info
 
-API_TOKEN = 'pk_live_51RTY3VJJWYIaBInzXzgjoKW4KUyU92JAQ3y3Fho2tSzKBFWCEjhiXR02fEbpvTZnjEgEOw3BdmUAk7KHNiDtFCBi00mhpYz4sy'
+API_TOKEN = '8074878440:AAEgi61kaBrUlfyVksyQ_zZLBrONMhAf_rU'
 bot = Bot(token=API_TOKEN)
 dp = Dispatcher(bot)
 
-with open('users.json', 'r') as f:
-    users = json.load(f)
-
-def save_users():
-    with open('users.json', 'w') as f:
-        json.dump(users, f)
-
-@dp.message_handler(commands=['start'])
-async def start(message: types.Message):
-    uid = str(message.from_user.id)
-    if uid not in users:
-from aiogram import Bot, Dispatcher, types
-from aiogram.utils import executor
-import json
-from stripe_checker import check_card
-from bin_lookup import get_bin_info
-
-API_TOKEN = '8074878440:AAEgi61kaBrUlfyVksyQ_zZLBrONMhAf_rU'  # Pon tu token aquí
-bot = Bot(token=API_TOKEN)
-dp = Dispatcher(bot)
-
-# Carga usuarios o crea archivo vacío si no existe
+# Load users or create empty file if it doesn't exist
 try:
     with open('users.json', 'r') as f:
         users = json.load(f)
@@ -57,30 +36,11 @@ _Pasarela:_ Stripe Live
 
 📄 Envía las tarjetas en formato:
 `5303xxxxxxxxxxxx|MM|YYYY|CVV`
-""",
-        parse_mode="Markdown"
-    )
-
-# Aquí agregarás más handlers para recibir tarjetas y procesarlas
-
-if __name__ == '__main__':
-    executor.start_polling(dp, skip_updates=True)        users[uid] = {"credits": 0}
-        save_users()
-    credits = users[uid]["credits"]
-    await message.answer_photo(
-        open("FB_IMG_17529720788216929.jpg", "rb"),
-        caption=f"""🏴‍☠️ *357 Checker* 🏴‍☠️
-
-_Costo de Live:_ 1 crédito  
-_Costo de Dead:_ 1 crédito  
-_Pasarela:_ Stripe Live
-
-📄 Envía las tarjetas en formato:  
-`5303xxxxxxxxxxxx|MM|YYYY|CVV`
 
 Tienes {credits} créditos disponibles.
 Escribe /stop para cancelar.
-""", parse_mode="Markdown"
+""",
+        parse_mode="Markdown"
     )
 
 @dp.message_handler(commands=['stop'])
@@ -116,6 +76,9 @@ Motivo: {result['message']}"""
             responses.append(respuesta)
         except:
             responses.append(f"❌ Error con formato o tarjeta: {card}")
-    
+
     save_users()
     await message.reply("\n\n".join(responses), parse_mode="Markdown")
+
+if __name__ == '__main__':
+    executor.start_polling(dp, skip_updates=True)
