@@ -26,9 +26,10 @@ async def start(message: types.Message):
         users[uid] = {"credits": 0}
         save_users()
     credits = users[uid]["credits"]
-    await message.answer_photo(
-        photo=open("FB_IMG_17529720788216929.jpg", "rb"),
-        caption=f"""🏴‍☠️ *357 Checker* 🏴‍☠️
+    with open("FB_IMG_17529720788216929.jpg", "rb") as photo:
+        await message.answer_photo(
+            photo=photo,
+            caption=f"""🏴‍☠️ *357 Checker* 🏴‍☠️
 
 _Costo de Live:_ 1 crédito
 _Costo de Dead:_ 1 crédito
@@ -74,8 +75,10 @@ Motivo: {result['message']}"""
 
             users[uid]["credits"] -= 1
             responses.append(respuesta)
-        except:
-            responses.append(f"❌ Error con formato o tarjeta: {card}")
+        except ValueError:
+            responses.append(f"❌ Formato incorrecto: {card}")
+        except Exception as e:
+            responses.append(f"❌ Error procesando: {card}")
 
     save_users()
     await message.reply("\n\n".join(responses), parse_mode="Markdown")
