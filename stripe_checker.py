@@ -20,4 +20,3 @@ def check_card(number, month, year, cvc):
         "status": "DEAD",
         "message": "Tarjeta rechazada"
     }
-    }
